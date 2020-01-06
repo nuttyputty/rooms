@@ -1,6 +1,6 @@
 {
-  "name": "@rooms/client",
-  "version": "0.1.0",
+  "name": "@nuttyputty/rooms-client",
+  "version": "0.1.4",
   "description": "Rooms client",
   "author": "Jonathan Brumley <cayasso@gmail.com>",
   "main": "./node.js",
