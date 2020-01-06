@@ -36,7 +36,7 @@ const createSocket = (url, options = {}, WebSocket) => {
 
     if (type === types.PING) {
       send(types.PONG)
-      return resetPing(emit('ping'))
+      return resetPing(emit('pong'))
     }
 
     if (type === types.ID) {
