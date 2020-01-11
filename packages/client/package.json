@@ -1,5 +1,5 @@
 {
-  "name": "@rooms/client",
+  "name": "@nuttyputty/rooms-client",
   "version": "0.2.0",
   "description": "Rooms client",
   "author": "Jonathan Brumley <cayasso@gmail.com>",
