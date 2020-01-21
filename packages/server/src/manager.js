@@ -47,7 +47,6 @@ const createManager = (server, options) => {
   const onCommand = async (room, { type, id, data }) => {
     data = data || {}
     log('incoming command %s from %s with %j', type, id, data)
-    log(room)
     try {
       switch (type) {
         case types.JOIN:
@@ -79,8 +78,8 @@ const createManager = (server, options) => {
     }
     if(!room.cached){
       room.on('dispose', () => setTimeout(bus.dispose, 1000))
-      handler(room)
     }
+    handler(room)
   }
 
   return async (socket, handler) => {
