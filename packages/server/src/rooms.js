@@ -98,8 +98,8 @@ module.exports = (options = {}) => {
     if (!ns) ns = '*'
     if(rooms.has(ns)){
       return {...rooms.get(ns), cached: true}
-    }    
-    const room = reateRoom(ns, { ...options, ...params, rooms })
+    }
+    const room = createRoom(ns, { ...options, ...params, rooms })
     rooms.set(ns, room)
     return room
   }
