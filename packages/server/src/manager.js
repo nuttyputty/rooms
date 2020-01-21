@@ -75,7 +75,10 @@ const createManager = (server, options) => {
     const room = await rooms(ns, { bus })
     bus.on('event', onEvent.bind(null, room))
     bus.on('command', onCommand.bind(null, room))
-    room.on('dispose', () => setTimeout(bus.dispose, 1000))
+    room.on('dispose', () => {
+      log("DISPOSEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD OF")
+      setTimeout(bus.dispose, 1000)
+    })
     handler(room)
   }
 
