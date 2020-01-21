@@ -25,12 +25,12 @@ module.exports = ({ engine }) => {
     }
 
     const onEvent = data => {
-      log('EVENT:' data)
+      log('EVENT:', data)
       bus.emit('event', data)
     }
 
     const onCommand = async data => {
-      log('COMMAND:' data)
+      log('COMMAND:', data)
       bus.emit('command', data)
     }
 
