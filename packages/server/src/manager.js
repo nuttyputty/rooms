@@ -20,7 +20,7 @@ const createManager = (server, options) => {
     if (type === types.DISPOSE && terminateOnDispose) {
       setTimeout(terminate, terminateDisposeTimeout, ns)
     }
-
+    log('ahaaaa', server.clients)
     log('broadcasting %s to %s with %j', type, ns, data, to, not)
     return broadcast(server, ns, type, data, { to, not, transform })
   }
