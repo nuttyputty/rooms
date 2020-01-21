@@ -1,7 +1,7 @@
 const emitter = require('component-emitter')
 const { types } = require('@rooms/protocol')
 const {debug} = require('./utils')
-
+const log = debug('bus')
 
 module.exports = ({ engine }) => {
   const cache = new Map()
