@@ -20,7 +20,6 @@ const createManager = (server, options) => {
     if (type === types.DISPOSE && terminateOnDispose) {
       setTimeout(terminate, terminateDisposeTimeout, ns)
     }
-    log('ahaaaa', server.clients)
     log('broadcasting %s to %s with %j', type, ns, data, to, not)
     return broadcast(server, ns, type, data, { to, not, transform })
   }
@@ -73,25 +72,22 @@ const createManager = (server, options) => {
   const createRoom = async (ns, handler = () => {}) => {
     const bus = getBus(ns)
     const room = await rooms(ns, { bus })
-    bus.on('event', onEvent.bind(null, room))
-    bus.on('command', onCommand.bind(null, room))
-    room.on('dispose', () => {
-      log("DISPOSEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD OF")
-      setTimeout(bus.dispose, 1000)
-    })
-    handler(room)
+    if(!bus.cached){
+      bus.on('event', onEvent.bind(null, room))
+      bus.on('command', onCommand.bind(null, room))
+    }
+    if(!room.cached){
+      room.on('dispose', () => {
+        setTimeout(bus.dispose, 1000)
+      })
+      handler(room)
+    }
   }
 
   return async (socket, handler) => {
     const { id, ns, user, query } = socket
 
-    // Avoid race condition
-    await engine.delay(ns)
-
-    // Check if room listener exist
-    if (!(await engine.exist(`c:${ns}`))) {
-      await createRoom(ns, handler)
-    }
+    await createRoom(ns, handler)
 
     const data = { ...query }
 

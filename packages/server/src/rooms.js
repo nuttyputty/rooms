@@ -96,7 +96,7 @@ module.exports = (options = {}) => {
 
   return (ns, params = {}) => {
     if (!ns) ns = '*'
-    const room = rooms.get(ns) || createRoom(ns, { ...options, ...params, rooms })
+    const room = {...rooms.get(ns), cached: true} || createRoom(ns, { ...options, ...params, rooms })
     rooms.set(ns, room)
     return room
   }
