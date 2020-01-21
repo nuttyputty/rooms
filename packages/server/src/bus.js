@@ -8,7 +8,7 @@ module.exports = ({ engine }) => {
 
   return ns => {
 
-    if (cache.has(ns)) return {...cache.get(ns), cached: false}
+    if (cache.has(ns)) return {...cache.get(ns), cached: true}
 
     const bus = emitter({})
 
