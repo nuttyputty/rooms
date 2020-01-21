@@ -72,7 +72,7 @@ const createManager = (server, options) => {
   const createRoom = async (ns, handler = () => {}) => {
     const bus = getBus(ns)
     const room = await rooms(ns, { bus })
-    log(room)
+    log("IS CACHED", room.cached)
     if(!bus.cached){
       bus.on('event', onEvent.bind(null, room))
       bus.on('command', onCommand.bind(null, room))
