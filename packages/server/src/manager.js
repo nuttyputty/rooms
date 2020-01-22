@@ -38,9 +38,8 @@ const createManager = (server, options) => {
     }
     const bus = getBus(ns)
     const room = await rooms(ns, { bus })
-    const {type, ...e} = encode(data)
-    const d = decode(e.data)
-    onCommand(room, {...d, id})
+
+    onCommand(room, {...msg, id})
   }
 
   const onEvent = (room, [type, data, to, not]) => {
@@ -77,12 +76,11 @@ const createManager = (server, options) => {
 
     if(!bus.cached){
       bus.on('event', onEvent.bind(null, room))
-      bus.on('command', onCommand.bind(null, room))
     }
     if(!room.cached){
       room.on('dispose', () => setTimeout(bus.dispose, 1000))
+      handler(room)
     }
-    handler(room)
     return room
   }
 
@@ -96,7 +94,7 @@ const createManager = (server, options) => {
     if (user) data.user = user
 
     log('client %s joining room %s with data %j', id, ns, data)
-    room.join(id, encode(data))
+    room.join(id, data)
     socket.on('disconnect', () => sendCommand(ns, id, { type: types.LEAVE }))
     return socket.on('message', onMessage.bind(null, socket, ns, id))
   }
