@@ -1,7 +1,7 @@
 'use strict'
 
 const { types, unpack, broadcast } = require('@rooms/protocol')
-const { debug } = require('./utils')
+const { debug, decode, encode } = require('./utils')
 const createBus = require('./bus')
 
 const log = debug('manager')
@@ -38,7 +38,7 @@ const createManager = (server, options) => {
     }
     const bus = getBus(ns)
     const room = await rooms(ns, { bus })
-    log('WHATS IN THIS DATA', data)
+    log('WHATS IN THIS DATA', encode(data), decode(data))
     onCommand(room, {...data, id})
   }
 
