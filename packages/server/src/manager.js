@@ -12,10 +12,6 @@ const createManager = (server, options) => {
   const DEFAULT_ERROR_CODE = 400
   const getBus = createBus(options)
 
-  const sendCommand = (ns, id, data) => {
-    getBus(ns).call(id, data)
-  }
-
   const sendEvent = (ns, type, data, to = [], not = []) => {
     if (type === types.DISPOSE && terminateOnDispose) {
       setTimeout(terminate, terminateDisposeTimeout, ns)
@@ -37,8 +33,9 @@ const createManager = (server, options) => {
     if (msg.type === types.PONG) {
       return socket.emit('pong', msg.data)
     }
-
-    sendCommand(ns, id, msg)
+    const bus = getBus(ns)
+    const room = await rooms(ns, { bus })
+    onCommand(room, {...msg, id})
   }
 
   const onEvent = (room, [type, data, to, not]) => {
@@ -75,7 +72,6 @@ const createManager = (server, options) => {
     const room = await rooms(ns, { bus })
     if(!room.cached){
       bus.on('event', onEvent.bind(null, room))
-      bus.on('command', onCommand.bind(null, room))
     }
     if(!room.cached){
       room.on('dispose', () => setTimeout(bus.dispose, 1000))
@@ -86,17 +82,13 @@ const createManager = (server, options) => {
   return async (socket, handler) => {
     const { id, ns, user, query } = socket
 
-    // Avoid race condition
-    await engine.delay(ns)
-
-    await createRoom(ns, handler)
-
     const data = { ...query }
 
     if (user) data.user = user
 
     log('client %s joining room %s with data %j', id, ns, data)
-    sendCommand(ns, id, { type: types.JOIN, data })
+    const room = await createRoom(ns, handler)
+    room.join(id, data)
     socket.on('disconnect', () => sendCommand(ns, id, { type: types.LEAVE }))
     return socket.on('message', onMessage.bind(null, socket, ns, id))
   }
