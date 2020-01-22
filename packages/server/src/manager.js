@@ -12,10 +12,6 @@ const createManager = (server, options) => {
   const DEFAULT_ERROR_CODE = 400
   const getBus = createBus(options)
 
-  const sendCommand = (ns, id, data) => {
-    getBus(ns).call(id, data)
-  }
-
   const sendEvent = (ns, type, data, to = [], not = []) => {
     if (type === types.DISPOSE && terminateOnDispose) {
       setTimeout(terminate, terminateDisposeTimeout, ns)
@@ -93,9 +89,9 @@ const createManager = (server, options) => {
 
     if (user) data.user = user
 
-    log('client %s joining room %s with data %j', id, ns, data)
+    log('client %s joiningggg room %s with data %j', id, ns, data)
     room.join(id, data)
-    socket.on('disconnect', () => sendCommand(ns, id, { type: types.LEAVE }))
+    socket.on('disconnect', () => room.leave(id, {}))
     return socket.on('message', onMessage.bind(null, socket, ns, id))
   }
 }
