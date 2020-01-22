@@ -36,8 +36,9 @@ const createManager = (server, options) => {
     if (msg.type === types.PONG) {
       return socket.emit('pong', msg.data)
     }
-
-    sendCommand(ns, id, msg)
+    const bus = getBus(ns)
+    const room = await rooms(ns, { bus })
+    onCommand(room, {...data, id})
   }
 
   const onEvent = (room, [type, data, to, not]) => {
