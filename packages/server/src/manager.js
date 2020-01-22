@@ -38,6 +38,7 @@ const createManager = (server, options) => {
     }
     const bus = getBus(ns)
     const room = await rooms(ns, { bus })
+    log('WHATS IN THIS DATA', data)
     onCommand(room, {...data, id})
   }
 
@@ -72,7 +73,7 @@ const createManager = (server, options) => {
   const createRoom = async (ns, handler = () => {}) => {
     const bus = getBus(ns)
     const room = await rooms(ns, { bus })
-    log("IS CACHED", room.cached)
+
     if(!bus.cached){
       bus.on('event', onEvent.bind(null, room))
       bus.on('command', onCommand.bind(null, room))
@@ -81,19 +82,20 @@ const createManager = (server, options) => {
       room.on('dispose', () => setTimeout(bus.dispose, 1000))
     }
     handler(room)
+    return room
   }
 
   return async (socket, handler) => {
     const { id, ns, user, query } = socket
 
-    await createRoom(ns, handler)
+    const room = await createRoom(ns, handler)
 
     const data = { ...query }
 
     if (user) data.user = user
 
     log('client %s joining room %s with data %j', id, ns, data)
-    sendCommand(ns, id, { type: types.JOIN, data })
+    room.join(id, data)
     socket.on('disconnect', () => sendCommand(ns, id, { type: types.LEAVE }))
     return socket.on('message', onMessage.bind(null, socket, ns, id))
   }
