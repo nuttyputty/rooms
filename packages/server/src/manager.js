@@ -94,7 +94,7 @@ const createManager = (server, options) => {
 
     log('client %s joining room %s with data %j', id, ns, data)
     room.join(id, data)
-    socket.on('disconnect', () => sendCommand(ns, id, { type: types.LEAVE }))
+    socket.on('disconnect', () => room.leave(id, {}))
     return socket.on('message', onMessage.bind(null, socket, ns, id))
   }
 }
