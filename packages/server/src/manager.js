@@ -27,7 +27,7 @@ const createManager = (server, options) => {
     })
   }
 
-  const onMessage = (socket, ns, id, data) => {
+  const onMessage = async (socket, ns, id, data) => {
     const msg = unpack(data) || {}
 
     if (msg.type === types.PONG) {
