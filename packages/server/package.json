@@ -1,6 +1,6 @@
 {
   "name": "@nuttyputty/rooms-server",
-  "version": "0.2.5-test9",
+  "version": "0.2.5-test10",
   "description": "Rooms server",
   "author": "Jonathan Brumley <cayasso@gmail.com>",
   "main": "./index.js",
