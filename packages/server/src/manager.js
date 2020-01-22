@@ -22,7 +22,7 @@ const createManager = (server, options) => {
 
   const terminate = ns => {
     server.clients.forEach(socket => {
-      if (socket.ns === ns) socket.close(410, 'disposed')
+      if (socket.ns === ns) socket.close()
     })
   }
 
