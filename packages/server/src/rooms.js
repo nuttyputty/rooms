@@ -1,5 +1,5 @@
 const emitter = require('component-emitter')
-const { types } = require('@rooms/protocol')
+const { types, write } = require('@rooms/protocol')
 const { isFunction, isNumber } = require('./utils')
 
 const createRoom = (ns, { bus, roomTimeout, disableRoomTimeout, rooms } = {}) => {
@@ -42,7 +42,7 @@ const createRoom = (ns, { bus, roomTimeout, disableRoomTimeout, rooms } = {}) =>
   }
 
   room.write = (id, data) => {
-    if(!socks.has(id)) return 
+    if(!socks.has(id)) return
     const socket = socks.get(id)
     write(socket, types.DATA, data)
   }
