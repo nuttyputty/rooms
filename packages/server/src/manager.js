@@ -73,10 +73,14 @@ const createManager = (server, options) => {
   const createRoom = async (ns, handler = () => {}) => {
     const bus = getBus(ns)
     const room = await rooms(ns, { bus })
-    bus.on('event', onEvent.bind(null, room))
-    bus.on('command', onCommand.bind(null, room))
-    room.on('dispose', () => setTimeout(bus.dispose, 1000))
-    handler(room)
+    if(!room.cached){
+      bus.on('event', onEvent.bind(null, room))
+      bus.on('command', onCommand.bind(null, room))
+    }
+    if(!room.cached){
+      room.on('dispose', () => setTimeout(bus.dispose, 1000))
+      handler(room)
+    }
   }
 
   return async (socket, handler) => {
@@ -85,10 +89,7 @@ const createManager = (server, options) => {
     // Avoid race condition
     await engine.delay(ns)
 
-    // Check if room listener exist
-    if (!(await engine.exist(`c:${ns}`))) {
-      await createRoom(ns, handler)
-    }
+    await createRoom(ns, handler)
 
     const data = { ...query }
 

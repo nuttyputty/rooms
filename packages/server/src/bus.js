@@ -5,7 +5,7 @@ module.exports = ({ engine }) => {
   const cache = new Map()
 
   return ns => {
-    if (cache.has(ns)) return cache.get(ns)
+    if (cache.has(ns)) return {...cache.get(ns), cached: true}
 
     const bus = emitter({})
 
