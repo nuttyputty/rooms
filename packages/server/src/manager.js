@@ -38,8 +38,9 @@ const createManager = (server, options) => {
     }
     const bus = getBus(ns)
     const room = await rooms(ns, { bus })
-    log('WHATS IN THIS DATA', encode(data), decode(data))
-    onCommand(room, {...data, id})
+    const {type, ...e} = encode(data)
+    const d = decode(e.data)
+    onCommand(room, {...d, id})
   }
 
   const onEvent = (room, [type, data, to, not]) => {
@@ -95,7 +96,7 @@ const createManager = (server, options) => {
     if (user) data.user = user
 
     log('client %s joining room %s with data %j', id, ns, data)
-    room.join(id, data)
+    room.join(id, encode(data))
     socket.on('disconnect', () => sendCommand(ns, id, { type: types.LEAVE }))
     return socket.on('message', onMessage.bind(null, socket, ns, id))
   }
