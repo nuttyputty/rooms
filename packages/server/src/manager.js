@@ -39,6 +39,7 @@ const createManager = (server, options) => {
   }
 
   const onEvent = (room, [type, data, to, not]) => {
+    room.emit('event', data)
     sendEvent(room.ns, type, data, to, not)
   }
 
