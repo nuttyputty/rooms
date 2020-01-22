@@ -25,10 +25,6 @@ module.exports = ({ engine }) => {
       bus.emit('event', data)
     }
 
-    const onCommand = async data => {
-      bus.emit('command', data)
-    }
-
     bus.send = (type, data = {}, to = [], not = []) => {
       engine.publish(ns, [type, data, to, not])
     }

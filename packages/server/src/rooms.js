@@ -1,4 +1,5 @@
 const emitter = require('component-emitter')
+const { types } = require('@rooms/protocol')
 const { isFunction, isNumber } = require('./utils')
 
 const createRoom = (ns, { bus, roomTimeout, disableRoomTimeout, rooms } = {}) => {
@@ -38,6 +39,12 @@ const createRoom = (ns, { bus, roomTimeout, disableRoomTimeout, rooms } = {}) =>
     room.emit('leave', id)
     if (socks.size > 0 || disableRoomTimeout) return
     timer = setTimeout(room.dispose, roomTimeout)
+  }
+
+  room.write = (id, data) => {
+    if(!socks.has(id)) return 
+    const socket = socks.get(id)
+    write(socket, types.DATA, data)
   }
 
   room.send = (to, data) => {
