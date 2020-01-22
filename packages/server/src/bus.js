@@ -10,13 +10,11 @@ module.exports = ({ engine }) => {
     const bus = emitter({})
 
     const bind = () => {
-      engine.subscribe(`e:${ns}`, onEvent)
-      engine.subscribe(`c:${ns}`, onCommand)
+      engine.subscribe(ns, onEvent)
 
       return () => {
         process.nextTick(() => {
-          engine.unsubscribe(`e:${ns}`, onEvent)
-          engine.unsubscribe(`c:${ns}`, onCommand)
+          engine.unsubscribe(ns, onEvent)
           bus.removeAllListeners()
         })
       }
@@ -26,16 +24,12 @@ module.exports = ({ engine }) => {
       bus.emit('event', data)
     }
 
-    const onCommand = async data => {
-      bus.emit('command', data)
-    }
-
     bus.send = (type, data = {}, to = [], not = []) => {
-      engine.publish(`e:${ns}`, [type, data, to, not])
+      engine.publish(ns, [type, data, to, not])
     }
 
     bus.call = (id, data) => {
-      engine.publish(`c:${ns}`, { ...data, id })
+      engine.publish(ns, { ...data, id })
     }
 
     bus.sendJoin = data => {
