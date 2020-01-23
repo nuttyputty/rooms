@@ -90,7 +90,7 @@ module.exports = (routes, options = {}, cb) => {
     delete options.port
   }
 
-  const server = new WebSocketServer({ ...options, verifyClient, noServer: true }, cb)
+  const server = new WebSocketServer({ ...options, verifyClient }, cb)
   server.ids = {}
 
   server.on('connection', async (socket, req) => {
