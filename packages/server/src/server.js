@@ -112,6 +112,7 @@ module.exports = (routes, options = {}, cb) => {
     socket.isAlive = true
 
     socket.on('pong', () => {
+      console.log("POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONNNNNNNNNNNNNNNNNGGGGGGGGGGGGGG");
       socket.isAlive = true
     })
 
