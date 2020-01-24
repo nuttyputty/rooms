@@ -95,7 +95,6 @@ module.exports = (routes, options = {}, cb) => {
 
   server.on('connection', async (socket, req) => {
     const { id = nanoid(12), ns, user, query } = req
-    log('connection', user)
     server.ids[id] = socket
     const remote = { id, ns, user }
 
@@ -112,7 +111,6 @@ module.exports = (routes, options = {}, cb) => {
     socket.isAlive = true
 
     socket.on('pong', () => {
-      console.log("POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONNNNNNNNNNNNNNNNNGGGGGGGGGGGGGG");
       socket.isAlive = true
     })
 
