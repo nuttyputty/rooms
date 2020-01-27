@@ -45,7 +45,7 @@ const decode = data => {
 const parseUrl = ({ url, headers }) => {
   const [path, _qs] = url.split('?')
   const query = qs.parse(_qs)
-  const parsedUrl = new URL(path, headers.origin)
+  const parsedUrl = new URL(path, headers.origin || 'https://www.example.com')
   parsedUrl.query = query
   return parsedUrl
 }
