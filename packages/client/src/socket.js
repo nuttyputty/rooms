@@ -16,9 +16,18 @@ const createSocket = (url, options = {}, WebSocket) => {
   }
 
   const connect = () => {
+    if(ws && ws.readyState === 1) return
     if (token) params.token = token
     const socketUrl = url + '?' + toQs(params)
     ws = new WebSocket(socketUrl)
+    setTimeout(()=>{
+      if(ws.readyState === 0){
+        ws.close()
+      }
+      if(ws.readyState > 1) {
+        connect()
+      }
+    }, 1000)
     ws.binaryType = 'arraybuffer'
     ws.addEventListener('message', onMessage)
     ws.onclose = onClose
@@ -88,7 +97,7 @@ const createSocket = (url, options = {}, WebSocket) => {
 
   const reconnect = () => {
     if (attempt++ > attempts || !online) return
-    setTimeout(() => connect(emit('reconnect', [attempt])), timeout)
+    connect(emit('reconnect', [attempt]))
   }
 
   const resetPing = () => {
