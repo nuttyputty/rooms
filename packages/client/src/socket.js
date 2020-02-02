@@ -21,10 +21,10 @@ const createSocket = (url, options = {}, WebSocket) => {
     const socketUrl = url + '?' + toQs(params)
     ws = new WebSocket(socketUrl)
     setTimeout(()=>{
-      if(ws.readyState === 0){
+      if(ws && ws.readyState === 0){
         ws.close()
       }
-      if(ws.readyState > 1) {
+      if(ws && ws.readyState > 1) {
         connect()
       }
     }, 1000)
