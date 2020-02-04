@@ -21,6 +21,7 @@ module.exports = ({ url, ...options } = {}) => {
   }
 
   const unsubscribe = ns => {
+    if(!fn[ns]) fn[ns] = () => {}
     sub.off('message', fns[ns])
     delete fns[ns]
     return sub.unsubscribe(ns)
