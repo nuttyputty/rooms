@@ -33,5 +33,6 @@
   "homepage": "https://github.com/cayasso/rooms#readme",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "a5f7298a70e8e85258fc2a9b63c2fc493b9f1085"
 }
