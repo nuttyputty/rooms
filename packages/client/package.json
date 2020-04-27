@@ -30,5 +30,6 @@
   "devDependencies": {
     "@clusterws/cws": "^1.1.1",
     "ws": "^7.2.1"
-  }
+  },
+  "gitHead": "f6d8c3a3793de56cd45e45e9e712bf1f067b3e6e"
 }
